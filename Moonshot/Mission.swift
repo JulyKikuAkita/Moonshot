@@ -25,6 +25,26 @@ struct Mission: Codable, Identifiable {
         }
     }
 
+    var joinedCrewNames: String {
+        crew.reduce("") { res, crewRole  in
+            if res == "" {
+                return "\(crewRole.name.capitalized)"
+            } else {
+                return "\(res), \(crewRole.name.capitalized)"
+            }
+        }
+    }
+
+    var joinedCrewRoless: String {
+        crew.reduce("") { res, crewRole  in
+            if res == "" {
+                return "\(crewRole.role.capitalized)"
+            } else {
+                return "\(res), \(crewRole.role.capitalized)"
+            }
+        }
+    }
+ 
     struct CrewRole: Codable {
         let name: String
         let role: String

@@ -10,21 +10,30 @@ import SwiftUI
 struct ContentView: View {
     let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
+    @State private var showCrew = false
 
     var body: some View {
         NavigationView {
             List(missions) { mission in
                 NavigationLink(destination: MissionView(mission: mission, astronauts: astronauts)) {
-                    missionItemView(mission: mission)
+                    missionItemView(mission: mission, showCrew: showCrew)
                 }
             }
             .navigationBarTitle("Moonshot")
+            .navigationBarItems(
+                trailing:
+                    Button("Toggle View"){
+                        showCrew.toggle()
+                    }
+            )
         }
     }
 }
 
 struct missionItemView: View {
     var mission: Mission
+    var showCrew: Bool
+
     var body: some View {
         Image(mission.image)
             .resizable()
@@ -34,7 +43,7 @@ struct missionItemView: View {
         VStack(alignment: .leading){
             Text(mission.displayName)
                 .font(.headline)
-            Text(mission.formattedLaunchDate)
+            showCrew ? Text(mission.joinedCrewNames) : Text(mission.formattedLaunchDate)
         }
     }
 }
